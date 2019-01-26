@@ -1,0 +1,10 @@
+{
+    "ENV": "development",
+    "logging": {
+        "logger_level": "debug",
+        "logger_file": "combined.log",
+        "archive_file": false,
+        "console_logging": true
+    },
+    "default_prefix": "!"
+}

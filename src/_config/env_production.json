@@ -1,0 +1,10 @@
+{
+    "ENV": "production",
+    "logging": {
+        "logger_level": "info",
+        "logger_file": "combined.log",
+        "archive_file": true,
+        "console_logging": false
+    },
+    "default_prefix": "!"
+}
