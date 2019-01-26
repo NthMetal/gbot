@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/NthMetal/gbot/issues"
   },
-  "homepage": "https://github.com/NthMetal/gbot#readme"
+  "homepage": "https://github.com/NthMetal/gbot#readme",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "winston": "^3.1.0"
+  }
 }
