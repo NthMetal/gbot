@@ -80,7 +80,7 @@ typings/
 .dynamodb/
 
 # Ignore auth.json which carries the token
-_config/auth.json
+src/_config/auth.json
 
 # Ignore all logging files
-_logs/*
+src/_logs/*
