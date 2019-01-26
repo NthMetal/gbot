@@ -2,7 +2,7 @@ var Discord = require('discord.io');
 var auth = require('./_config/auth.json');
 var {logger} = require('./logger/logger.js');
 var {env} = require(`./_config/env.js`);
-var {eventHandler} = require('./commands/eventHandler.js');
+var eventHandler = require('./commands/eventHandler.js');
 
 var gbot = new Discord.Client({
    token: auth.token,
@@ -10,6 +10,8 @@ var gbot = new Discord.Client({
 });
 
 var prefix = env.default_prefix;
+eventHandler.initialize(gbot);
+eventHandler = eventHandler.eventHandler;
 
 console.log("starting gbot");
 
@@ -22,7 +24,7 @@ gbot.on('ready', function (evt) {
     gbot.setPresence({ status: 'online', game: { name: 'with @Lichaes' } });
 });
 
-gbot.on('any', (event) => eventHandler(event, prefix));
+gbot.on('any', (event) => eventHandler(event, prefix, gbot));
 
 // gbot.on('message', function (user, userID, channelID, message, evt) {
 //     if(message.indexOf(prefix) === 0 ) {

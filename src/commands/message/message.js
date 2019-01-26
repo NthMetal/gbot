@@ -10,9 +10,11 @@ const messageCommands = {
     "roll": roll
 }
 
-module.exports = (data, prefix) => {
+module.exports = (data, prefix, messenger) => {
     let message = data.content;
     if(message.indexOf(prefix) === 0 ) {
-        console.log(messageParser(message, prefix));
+        let command = messageParser(message, prefix);
+        let mCommand = messageCommands[command.command];
+        if(mCommand) mCommand(command.args, command.argument, data, messenger);
     }
 }
