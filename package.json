@@ -1,0 +1,19 @@
+{
+  "name": "gbot",
+  "version": "1.0.0",
+  "description": "A discord bot named GBot.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NthMetal/gbot.git"
+  },
+  "author": "nthmetal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NthMetal/gbot/issues"
+  },
+  "homepage": "https://github.com/NthMetal/gbot#readme"
+}
