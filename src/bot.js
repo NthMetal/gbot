@@ -10,7 +10,7 @@ var gbot = new Discord.Client({
 });
 
 var prefix = env.default_prefix;
-eventHandler.initialize(gbot);
+eventHandler.initialize(gbot, logger);
 eventHandler = eventHandler.eventHandler;
 
 console.log("starting gbot");

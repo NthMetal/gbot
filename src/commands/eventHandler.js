@@ -3,8 +3,8 @@
 var messageHandler = require('./message/message.js');
 var {messenger} = require('./utils/messenger/messenger.js');
 
-module.exports.initialize = (gbot) => {
-    messenger.initialize(gbot);
+module.exports.initialize = (gbot, logger) => {
+    messenger.initialize(gbot, logger);
 }
 
 module.exports.eventHandler = (event, prefix, gbot) => {

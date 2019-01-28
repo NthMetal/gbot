@@ -20,6 +20,8 @@
   "homepage": "https://github.com/NthMetal/gbot#readme",
   "dependencies": {
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "google-images": "^2.1.0",
+    "imgur-search": "^1.0.1",
     "nodemon": "^1.18.9",
     "winston": "^3.1.0"
   }

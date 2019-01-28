@@ -11,7 +11,6 @@ module.exports = (args, argument, data, messenger) => {
     if(args.length === 1) {
         var upperBound = Number.parseFloat(args[0].replace(/\D/g,''));
         value = Math.floor(Math.random()*upperBound);
-        console.log(value);
     }
     if(args.length === 2) {
         var upperBound = Number.parseFloat(args[1].replace(/\D/g,''));
