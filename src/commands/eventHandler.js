@@ -1,7 +1,7 @@
 
 //message commands
-var messageHandler = require('./message/message.js');
-var {messenger} = require('./utils/messenger/messenger.js');
+var messageHandler = require('./message.js');
+var {messenger} = require('./utils/messenger.js');
 
 module.exports.initialize = (gbot, logger) => {
     messenger.initialize(gbot, logger);

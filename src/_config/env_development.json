@@ -7,5 +7,5 @@
         "console_logging": true,
         "message_logging": true
     },
-    "default_prefix": "!"
+    "default_prefix": "&"
 }

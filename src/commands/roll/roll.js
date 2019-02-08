@@ -5,7 +5,7 @@ const successfulRoll = 'GBot rolls a ';
 module.exports = (args, argument, data, messenger) => {
     var value = 0;
     if(args.length < 1 || args.length > 2) {
-        messenger.textMessage(invalidArgError, data.channel_id);
+        messenger.errorMessage(invalidArgError, data.channel_id);
         return;
     }
     if(args.length === 1) {
@@ -18,7 +18,7 @@ module.exports = (args, argument, data, messenger) => {
         value = Math.floor(Math.random()*upperBound)+lowerBound;
     }
     if(!value && value !== 0) {
-        messenger.textMessage(invalidParseError, data.channel_id);
+        messenger.errorMessage(invalidParseError, data.channel_id);
         return;
     }
     messenger.textMessage(successfulRoll+value, data.channel_id);

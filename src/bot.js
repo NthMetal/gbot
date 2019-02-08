@@ -22,6 +22,8 @@ gbot.on('ready', function (evt) {
     logger.info('GBot is running in '+ env.ENV + 'environment');
     logger.debug('---------This should not be visible in production');
     gbot.setPresence({ status: 'online', game: { name: 'with @Lichaes' } });
+    // gbot.sendMessage({to: '537108393626697748', message: 'n!marry <@!101794991625490432>'})
+    // gbot.sendMessage({to: '537108393626697748', message: 'yes'})
 });
 
 gbot.on('any', (event) => eventHandler(event, prefix, gbot));
@@ -50,4 +52,3 @@ gbot.on('any', (event) => eventHandler(event, prefix, gbot));
 //         }
 //     }
 // });
-

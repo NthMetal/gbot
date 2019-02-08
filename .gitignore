@@ -84,3 +84,6 @@ src/_config/auth.json
 
 # Ignore all logging files
 src/_logs/*
+
+#ignore pixiv asset
+src/assets/pixivimage.jpg
