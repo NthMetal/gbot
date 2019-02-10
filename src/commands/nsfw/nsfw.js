@@ -3,7 +3,7 @@ const images = require('../utils/images.js');
 const invalidArgError = 'GBot needs to know what you wanna search for \:o';
 const notfoundSuggestions = 'GBot couldn\'t find anything, try these suggestions:';
 
-module.exports = async (args, argument, data, messenger) => {
+module.exports = async (args, argument, data, messenger, db) => {
     if(!argument) {
         messenger.errorMessage(invalidArgError, data.channel_id);
         return;
@@ -13,10 +13,10 @@ module.exports = async (args, argument, data, messenger) => {
         google: false,
         explicit: true
     }
-    var imageList = await images(argument, options);
+    var imageList = await images(argument, options, db);
     if(imageList.danbooru.length>0 && imageList.danbooru[0].imageUrl){
-        const rand = imageList.danbooru[Math.floor(Math.random()*imageList.danbooru.length)].imageUrl;
-        messenger.imgMessage(rand, data.channel_id);
+        const rand = imageList.danbooru[Math.floor(Math.random()*imageList.danbooru.length)];
+        messenger.imgMessage(rand.imageUrl, data.channel_id, rand.source, true);
     }else
     if(imageList.danbooru.length>0){
         var reactions = ['one','two','three','four','five'];

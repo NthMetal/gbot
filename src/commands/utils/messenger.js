@@ -24,7 +24,7 @@ function textMessage(message, channelID) {
     logger.debug(`message sent: ${message}`);
 }
 
-function imgMessage(imgURL, channelID, nsfw=false) {
+function imgMessage(imgURL, channelID, message, nsfw=false) {
     if(!initialized) return;
     if(nsfw && !gbot.channels[channelID].nsfw) {
         errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
@@ -36,6 +36,7 @@ function imgMessage(imgURL, channelID, nsfw=false) {
         message: '',
         embed: {
             color: 0xB00B15,
+            title: message,
             image: {
                 url: imgURL
             }
@@ -47,7 +48,8 @@ function imgMessage(imgURL, channelID, nsfw=false) {
 
 function imgUpload(imgURL, channelID, message, nsfw=false) {
     if(!initialized) return;
-    if(nsfw && !gbot.channels[channelID].nsfw) {
+    console.log(channelID);
+    if(nsfw && !gbot.channels[channelID].nsfw){
         errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
         return;
     }

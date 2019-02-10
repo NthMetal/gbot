@@ -18,11 +18,11 @@ const messageCommands = {
     "pixivR": pixiv
 }
 
-module.exports = (data, prefix, messenger) => {
+module.exports = (data, prefix, messenger, db) => {
     let message = data.content;
     if(message.indexOf(prefix) === 0 ) {
         let command = messageParser(message, prefix);
         let mCommand = messageCommands[command.command];
-        if(mCommand) mCommand(command.args, command.argument, data, messenger);
+        if(mCommand) mCommand(command.args, command.argument, data, messenger, db);
     }
 }

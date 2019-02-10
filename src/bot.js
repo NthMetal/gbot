@@ -3,6 +3,9 @@ var auth = require('./_config/auth.json');
 var {logger} = require('./logger/logger.js');
 var {env} = require(`./_config/env.js`);
 var eventHandler = require('./commands/eventHandler.js');
+var MongoClient = require('mongodb');
+ 
+
 
 var gbot = new Discord.Client({
    token: auth.token,
@@ -13,7 +16,9 @@ var prefix = env.default_prefix;
 eventHandler.initialize(gbot, logger);
 eventHandler = eventHandler.eventHandler;
 
-console.log("starting gbot");
+
+
+
 
 gbot.on('ready', function (evt) {
     logger.info('Connected');
@@ -26,8 +31,20 @@ gbot.on('ready', function (evt) {
     // gbot.sendMessage({to: '537108393626697748', message: 'yes'})
 });
 
-gbot.on('any', (event) => eventHandler(event, prefix, gbot));
+console.log("connecting to gbot's brain");
 
+MongoClient.connect(env.mongoURL, function(err, client) {
+    if(err) throw err;
+    console.log("gbot's brain is now connected");
+   
+    console.log("starting gbot");
+
+    const db = client.db('gbot');
+
+    gbot.on('any', (event) => eventHandler(event, prefix, gbot, db));
+   
+    // client.close();
+  });
 // gbot.on('message', function (user, userID, channelID, message, evt) {
 //     if(message.indexOf(prefix) === 0 ) {
 //     }

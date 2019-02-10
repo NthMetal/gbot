@@ -2,7 +2,7 @@ const invalidArgError = 'GBot needs 1 or 2 arguments \:o';
 const invalidParseError = 'GBot doesn\'t think those are numbers';
 const successfulRoll = 'GBot rolls a ';
 
-module.exports = (args, argument, data, messenger) => {
+module.exports = (args, argument, data, messenger, db) => {
     var value = 0;
     if(args.length < 1 || args.length > 2) {
         messenger.errorMessage(invalidArgError, data.channel_id);

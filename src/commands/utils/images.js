@@ -14,16 +14,13 @@ const { danbooru_auth } = require('../../_config/auth.json');
 const Danbooru = require('danbooru');
 const booru = new Danbooru(danbooru_auth);
 
-var clients = [new GoogleImages(google_search_engine, keys[0]),
-               new GoogleImages(google_search_engine, keys[1]),
-               new GoogleImages(google_search_engine, keys[2]),
-               new GoogleImages(google_search_engine, keys[3])];
+var clients = [...keys.map(key => (new GoogleImages(google_search_engine, key)))]
 
 const invalidArgError = 'GBot needs to know what you wanna search for \:o';
 const notFoundError = 'GBot couldn\'t find anything \:(\nTry these tips: 1. Underscore instead of spaces.\n2. Last name first for japanese chars. [ex. watanabe_you]\n3. If a character\'s name appears in multiple sources, like "Marina", it\'s underscore series name in parenthesis. [ex: marina_(splatoon)]';
 const cantAccessError = 'GBot couldn\'t start the search \:(';
 
-module.exports = async (query, options) => {
+module.exports = async (query, options, db) => {
     
 
     var imgOptions = Object.assign(
@@ -74,15 +71,13 @@ async function getBooruImages(query, options) {
     return posts.length ?
     posts.map(item => ({
         imageUrl: item.large_file_url,
-        name: item.uploader_name
+        source: item.source
     })) : 
     await rp(suggestionURL, { json: true });
 }
 
 async function getPixivImages(query, options) {
     var head = 'https://app-api.pixiv.net/v1/search/illust?word=';
-    // var word = '渡辺曜';
-    // var word = 'hawkgirl';
     var body = '&search_target=partial_match_for_tags&sort=popular_desc&filter=for_ios';
     var tail = `&offset=`;
     var explicitFilter = options.explicit ? 1 : 0;
@@ -91,21 +86,21 @@ async function getPixivImages(query, options) {
         try {
             var items = await pixiv.requestUrl(head+encodeURIComponent(query)+body+tail+(i*30));
         }catch(error){
-            if(error.error.message.contains('Error occurred at the OAuth process.')) {
+            console.log(error);
+            if(error.message.indexOf('Error occurred at the OAuth process.') !== -1) {
                 pixiv.refreshAccessToken();
                 i--; continue;
             }
         }
-        
         if(items.illusts.length > 0){
-            // console.log('before: ', items.illusts.filter(item => item.x_restrict === explicitFilter).length);
-            // console.log('after: ', items.illusts.filter(item => item.x_restrict == explicitFilter).length);
+            console.log(items.illusts[0]);
             allItems.push(...items.illusts
                 .filter(item => item.x_restrict == explicitFilter)
                 .map(item => ({
                     imageUrl: item.image_urls.medium.replace('c/540x540_70/', ''),
                     name: item.user.name,
-                    title: item.title
+                    title: item.title,
+                    id: item.id
                 }))
             );
         }else{

@@ -7,5 +7,6 @@
         "console_logging": true,
         "message_logging": true
     },
-    "default_prefix": "&"
+    "default_prefix": "&",
+    "mongoURL": "mongodb://localhost:27017"
 }

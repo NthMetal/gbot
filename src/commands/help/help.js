@@ -7,9 +7,11 @@ const helpTextFragments = [
     '`nsfw`: Just like image but way more lewd. Only in NSFW channels.',
     '`pixiv`: Posts a random image from pixiv! (includes sort by popularity).',
     '`pixivR`: Posts a random nsfw image from pixiv! Only in NSFW channels',
+
+    '`I\'m also open source! check it out here`: <https://github.com/NthMetal/gbot>'
 ]
 
-module.exports = (args, argument, data, messenger) => {
+module.exports = (args, argument, data, messenger, db) => {
     var helpText = helpTextFragments.join('\n');
     messenger.textMessage(helpText, data.channel_id);
 }
