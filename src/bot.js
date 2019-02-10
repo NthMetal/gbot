@@ -35,5 +35,8 @@ MongoClient.connect(env.mongoURL, function(err, client) {
 
     gbot.on('any', (event) => eventHandler(event, prefix, gbot, db));
    
-    client.close();
+    gbot.on('disconnect', ()=> {
+        client.close();
+    })
+    
   });
