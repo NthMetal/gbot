@@ -1,9 +1,10 @@
 //testing imports
 var { assert } = require('chai');
+var sinon = require('sinon');
 
 //bot imports
 //var Discord = require('discord.io');
-var auth = require('./_fixtures/auth.json');
+var auth = require(`../src/_config/auth.js`);
 var Environment = require(`../src/_config/env.js`);
 var EventHandler = require('../src/commands/eventHandler.js');
 //var MongoClient = require('mongodb');
@@ -11,10 +12,11 @@ var EventHandler = require('../src/commands/eventHandler.js');
 describe('Testing GBotBot Initialization', function() {
 
     it('should successfully import auth', function() {
-        assert.equal(auth.token, 'discordtoken');
-        assert.equal(auth.danbooru_auth, 'danbooruauth');
-        assert.equal(auth.pixiv_username, 'pixivusername');
-        assert.equal(auth.pixiv_password, 'pixivpassword');
+        assert.isNotNull(auth, 'auth object was successfuly initialized');
+        assert.isString(auth.token, 'discord token is a string');
+        assert.isString(auth.danbooru_auth, 'danbooru auth key is a string');
+        assert.isString(auth.pixiv_username, 'pixiv username is a string');
+        assert.isString(auth.pixiv_password, 'pixiv password is a string');
     })
 
     it('should successfully initialize development variables', function() {
@@ -64,7 +66,25 @@ describe('Testing GBotBot Initialization', function() {
         assert.equal(env.default_prefix, '&');
         assert.equal(env.mongoURL, '');
     })
-
-
   
-  })
+  });
+
+  describe('Testing GBotBot Creation', function() {
+
+    it('should create an instance of GBot', function() {
+        var Discord = require('discord.io');
+        assert.isObject(Discord, 'discord object created');
+        var gbot = new Discord.Client({
+            token: auth.token,
+            autorun: true
+        });
+        assert.isObject(gbot, 'gbot object created');
+        assert.isFunction(gbot.on, 'gbot can listen to events');
+        
+    })
+
+    // it('should successfully initialize the EventHandler', function() {
+    //     var eventHandler = new EventHandler();
+    // })
+
+  });

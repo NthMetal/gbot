@@ -1,5 +1,5 @@
 var Discord = require('discord.io');
-var auth = require('./_config/auth.json');
+var auth = require('./_config/auth.js');
 var {logger} = require('./logger/logger.js');
 var Environment = require(`./_config/env.js`);
 var EventHandler = require('./commands/eventHandler.js');

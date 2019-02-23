@@ -1,18 +1,4 @@
-var pixiv_username, pixiv_password, danbooru_auth;
-try {
-    const auth = require('../../_config/auth.json');
-    pixiv_username = auth.pixiv_username;
-    pixiv_password = auth.pixiv_password;
-    danbooru_auth = auth.danbooru_auth;
-} catch (e) {
-    if (e.code !== 'MODULE_NOT_FOUND') {
-        throw e;
-    }
-    pixiv_username = process.env.pixiv_username;
-    pixiv_password = process.env.pixiv_password;
-    danbooru_auth = process.env.danbooru_auth;
-}
-
+const { pixiv_username, pixiv_password, danbooru_auth } = require('../../_config/auth.js');
 const rp = require('request-promise');
 
 const PixivAppApi = require('pixiv-api-client')
