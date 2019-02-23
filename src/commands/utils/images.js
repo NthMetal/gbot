@@ -13,6 +13,9 @@ try {
     danbooru_auth = process.env.danbooru_auth;
 }
 
+console.log(pixiv_username);
+console.log(pixiv_password);
+
 const rp = require('request-promise');
 
 const GoogleImages = require('google-images');
