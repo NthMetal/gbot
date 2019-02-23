@@ -10,7 +10,6 @@ module.exports = async (args, argument, data, messenger, db) => {
     }
     const options = {
         pixiv: false,
-        google: false,
         explicit: true
     }
     var imageList = await images(argument, options, db);

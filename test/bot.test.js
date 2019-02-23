@@ -13,8 +13,6 @@ describe('Testing GBotBot Initialization', function() {
     it('should successfully import auth', function() {
         assert.equal(auth.token, 'discordtoken');
         assert.equal(auth.danbooru_auth, 'danbooruauth');
-        assert.lengthOf(auth.keys, 4);
-        assert.equal(auth.google_search_engine, 'googlesearchengine');
         assert.equal(auth.pixiv_username, 'pixivusername');
         assert.equal(auth.pixiv_password, 'pixivpassword');
     })

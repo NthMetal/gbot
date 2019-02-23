@@ -1,13 +1,6 @@
 {
     "token": "<Discord Bot Token>",
-    "danbooru_auth": "<>",
-    "keys": [
-        "<Google Search API key1>",
-        "<Google Search API key2>",
-        "<Google Search API key3>",
-        "<Google Search API key4>" 
-    ],
-    "google_search_engine" : "<google search engine id>",
+    "danbooru_auth": "<Danbooru Auth>",
     "pixiv_username": "<Username for your pixiv account>",
     "pixiv_password": "<Password for your pixiv account>"
 }

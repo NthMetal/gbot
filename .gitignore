@@ -79,7 +79,7 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-# Ignore auth.json which carries the token
+# Ignore auth.json which carries the tokens
 src/_config/auth.json
 
 # Ignore all logging files

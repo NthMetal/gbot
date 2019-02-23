@@ -10,8 +10,7 @@ module.exports = async (args, argument, data, messenger, db) => {
         return;
     }
     const options = {
-        pixiv: false,
-        google: false
+        pixiv: false
     }
     var imageList = await images(argument, options, db);
     if(imageList.danbooru.length>0 && imageList.danbooru[0].imageUrl){

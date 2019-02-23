@@ -12,7 +12,6 @@ module.exports = async (args, argument, data, messenger, db) => {
     var command = data.content.split(argument)[0].substr(-2) === 'R ' ? 'pixivR' : 'pixiv';
     const options = {
         booru: false,
-        google: false,
         explicit: command === 'pixivR',
         pixivMaxPages: 5
     }

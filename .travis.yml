@@ -10,5 +10,3 @@ before_install:
 script:
   - nyc mocha
   - nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov
-# after_success:
-# - bash <(curl -s https://codecov.io/bash)

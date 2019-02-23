@@ -1,4 +1,17 @@
-const { google_search_engine, keys, pixiv_username, pixiv_password, danbooru_auth } = require('../../_config/auth.json');
+var pixiv_username, pixiv_password, danbooru_auth;
+try {
+    const auth = require('../../_config/auth.json');
+    pixiv_username = auth.pixiv_username;
+    pixiv_password = auth.pixiv_password;
+    danbooru_auth = auth.danbooru_auth;
+} catch (e) {
+    if (e.code !== 'MODULE_NOT_FOUND') {
+        throw e;
+    }
+    pixiv_username = process.env.pixiv_username;
+    pixiv_password = process.env.pixiv_password;
+    danbooru_auth = process.env.danbooru_auth;
+}
 
 const rp = require('request-promise');
 
@@ -12,8 +25,6 @@ pixiv.login(pixiv_username, pixiv_password);
 const Danbooru = require('danbooru');
 const booru = new Danbooru(danbooru_auth);
 
-var clients = [...keys.map(key => (new GoogleImages(google_search_engine, key)))]
-
 const invalidArgError = 'GBot needs to know what you wanna search for \:o';
 const notFoundError = 'GBot couldn\'t find anything \:(\nTry these tips: 1. Underscore instead of spaces.\n2. Last name first for japanese chars. [ex. watanabe_you]\n3. If a character\'s name appears in multiple sources, like "Marina", it\'s underscore series name in parenthesis. [ex: marina_(splatoon)]';
 const cantAccessError = 'GBot couldn\'t start the search \:(';
@@ -25,7 +36,6 @@ module.exports = async (query, options, db) => {
       {
         booru: true,
         pixiv: true,
-        google: true,
         random: true,
         explicit: false,
         booruLimit: 10,
@@ -36,15 +46,12 @@ module.exports = async (query, options, db) => {
     
     var images = {
         danbooru: [],
-        pixiv: [],
-        google: []
+        pixiv: []
     }
     
     if(imgOptions.booru) images.danbooru = await getBooruImages(query, imgOptions);
     
     if(imgOptions.pixiv) images.pixiv = await getPixivImages(query, imgOptions);
-
-    if(imgOptions.google) images.google = await getGoogleImages(query, imgOptions);
 
     return images;
 
@@ -107,23 +114,4 @@ async function getPixivImages(query, options) {
     }
     console.log(allItems.length);
     return allItems;
-}
-
-async function getGoogleImages(query, imgOptions){
-    const maxpages = 15;
-    var pagenum = Math.floor(Math.random()*maxpages) + 1;
-    var options = {
-        page: pagenum
-    }
-    var allImages = [];
-    for(var i=0;i<clients.length;i++){
-        try {
-            var images = await clients[i].search(query, options);
-        }catch(error) {
-            continue;
-        }
-        allImages.push(...images.map(image => image.url));
-        break;
-    }
-    return allImages;
 }
