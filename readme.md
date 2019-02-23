@@ -1,4 +1,4 @@
-gbot
+GBot! [![Build Status](https://travis-ci.org/NthMetal/gbot.svg?branch=master)](https://travis-ci.org/NthMetal/gbot)
 
 Todo:
 
