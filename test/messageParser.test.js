@@ -1,5 +1,5 @@
 console.log("test wew");
-var assert = require('Chai').assert;
+var assert = require('chai').assert;
 var messageParser = require('../src/commands/utils/messageParser.js');
 
 describe('Testing Message Parser', function() {
