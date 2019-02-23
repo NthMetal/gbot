@@ -4,7 +4,7 @@
   "description": "A discord bot named GBot.",
   "main": "bot.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha || false",
+    "test": "mocha || false",
     "dev": "env NODE_ENV=development nodemon ./src/bot.js",
     "prod": "env NODE_ENV=production nodemon ./src/bot.js"
   },

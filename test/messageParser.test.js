@@ -1,4 +1,3 @@
-console.log("test wew");
 var assert = require('chai').assert;
 var messageParser = require('../src/commands/utils/messageParser.js');
 
