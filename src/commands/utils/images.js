@@ -13,12 +13,8 @@ try {
     danbooru_auth = process.env.danbooru_auth;
 }
 
-console.log(pixiv_username);
-console.log(pixiv_password);
-
 const rp = require('request-promise');
 
-const GoogleImages = require('google-images');
 const PixivAppApi = require('pixiv-api-client')
 const pixivImg = require('pixiv-img');
 const pixiv = new PixivAppApi();
@@ -27,10 +23,6 @@ pixiv.login(pixiv_username, pixiv_password);
 
 const Danbooru = require('danbooru');
 const booru = new Danbooru(danbooru_auth);
-
-const invalidArgError = 'GBot needs to know what you wanna search for \:o';
-const notFoundError = 'GBot couldn\'t find anything \:(\nTry these tips: 1. Underscore instead of spaces.\n2. Last name first for japanese chars. [ex. watanabe_you]\n3. If a character\'s name appears in multiple sources, like "Marina", it\'s underscore series name in parenthesis. [ex: marina_(splatoon)]';
-const cantAccessError = 'GBot couldn\'t start the search \:(';
 
 module.exports = async (query, options, db) => {
     
