@@ -22,6 +22,7 @@ const messageCommands = {
 
 module.exports = async (data, prefix, messenger, db) => {
     let message = data.content;
+    /* istanbul ignore else  */
     if(message.indexOf(prefix) === 0 ) {
         let command = messageParser(message, prefix);
         let mCommand = messageCommands[command.command];
@@ -29,6 +30,8 @@ module.exports = async (data, prefix, messenger, db) => {
     }
     // console.log(data);
     // if(data.channel_id === '345067118649147392' && data.author.id === '154333042339479553'){
+    // TODO: this needs to be moved
+    /* istanbul ignore next */
     if(data.channel_id === '537108393626697748' && data.author.id === '101794991625490432'){
         console.log("lich comment in cutem")
         data.content.split(/[\<\>]/).filter(item => item[0]===':').forEach(async emoji => {

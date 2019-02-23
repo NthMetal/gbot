@@ -6,7 +6,8 @@ var sinon = require('sinon');
 var auth = require(`../src/_config/auth.js`);
 var Environment = require(`../src/_config/env.js`);
 var EventHandler = require('../src/commands/eventHandler.js');
-
+var Discord = require('discord.io');
+var messageHandler = require('../src/commands/message.js');
 //var MongoClient = require('mongodb');
 
 describe('Testing GBotBot Initialization', function() {
@@ -71,40 +72,34 @@ describe('Testing GBotBot Initialization', function() {
 
   describe('Testing GBotBot Creation', function() {
 
+    var gbot_fake = {
+        on: sinon.fake(),
+        sendMessage: sinon.fake(),
+        uploadFile: sinon.fake(),
+        deleteMessage: sinon.fake(),
+        removeListener: sinon.fake(),
+        addReaction: sinon.fake()
+    }
+    var logger_fake = {
+        info: sinon.fake(),
+        debug: sinon.fake()
+    }
+
     it('should create a Discord object', function() {
-        var Discord = require('discord.io');
         assert.isObject(Discord, 'discord object created');
-        // var gbot = new Discord.Client({
-        //     token: auth.token,
-        //     autorun: true
-        // });
-        // assert.isObject(gbot, 'gbot object created');
-        // assert.isFunction(gbot.on, 'gbot can listen to events');
     })
 
     it('should handle an event', function() {
-        var gbot_fake = {
-            on: sinon.fake(),
-            sendMessage: sinon.fake(),
-            uploadFile: sinon.fake(),
-            deleteMessage: sinon.fake(),
-            removeListener: sinon.fake(),
-            addReaction: sinon.fake()
-        }
-        var logger_fake = {
-            info: sinon.fake(),
-            debug: sinon.fake()
-        }
         var event_8ball = {
             t: 'MESSAGE_CREATE',
             d: {
-                content: '$8ball Hey gbot is this a test?'
+                content: '&help'
             }
         }
         var event_reaction = {
             t: 'MESSAGE_UPDATE',
             d: {
-                content: '$8ball Hey gbot is this a test?'
+                content: '&help'
             }
         }
         var eventHandler = new EventHandler(gbot_fake, logger_fake);
@@ -113,7 +108,8 @@ describe('Testing GBotBot Initialization', function() {
         
         eventHandler.handleEvent(event_8ball, '&', gbot_fake, null);
         eventHandler.handleEvent(event_reaction, '&', gbot_fake, null);
-        assert.isOk(eventHandler, 'event handler is ok after running');
+        assert(gbot_fake.sendMessage.called);
+        assert(eventHandler, 'event handler is ok after running');
     })
 
   });
