@@ -1,4 +1,4 @@
-var assert = require('chai').assert;
+var { assert } = require('chai');
 var messageParser = require('../src/commands/utils/messageParser.js');
 
 describe('Testing Message Parser', function() {

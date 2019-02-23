@@ -1,8 +1,8 @@
 var dev = require('./env_development');
 var prod = require('./env_production');
 
-function getEnvironment() {
-    switch(process.env.NODE_ENV) {
+function getEnvironment(env) {
+    switch(env) {
         case 'development':
             return dev;
         case 'production':
@@ -12,4 +12,4 @@ function getEnvironment() {
     }
 }
 
-module.exports.env = getEnvironment();
+module.exports.env = getEnvironment;

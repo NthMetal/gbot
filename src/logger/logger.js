@@ -1,7 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 var winston = require('winston');
-var {env} = require(`../_config/env.js`);
+var Environment = require(`../_config/env.js`);
+var env = Environment.env(process.env.NODE_ENV);
 
 const logfile = path.join(__dirname, `../_logs/${env.logging.logger_file}`);
 

@@ -1,8 +1,8 @@
 var Discord = require('discord.io');
 var auth = require('./_config/auth.json');
 var {logger} = require('./logger/logger.js');
-var {env} = require(`./_config/env.js`);
-var eventHandler = require('./commands/eventHandler.js');
+var Environment = require(`./_config/env.js`);
+var EventHandler = require('./commands/eventHandler.js');
 var MongoClient = require('mongodb');
 
 var gbot = new Discord.Client({
@@ -10,9 +10,9 @@ var gbot = new Discord.Client({
    autorun: true
 });
 
+var env = Environment.env(process.env.NODE_ENV);
 var prefix = env.default_prefix;
-eventHandler.initialize(gbot, logger);
-eventHandler = eventHandler.eventHandler;
+var eventHandler = new EventHandler(gbot, logger);
 
 gbot.on('ready', function (evt) {
     logger.info('Connected');
@@ -33,10 +33,9 @@ MongoClient.connect(env.mongoURL, function(err, client) {
 
     const db = client.db('gbot');
 
-    gbot.on('any', (event) => eventHandler(event, prefix, gbot, db));
+    gbot.on('any', (event) => eventHandler.handleEvent(event, prefix, gbot, db));
    
     gbot.on('disconnect', ()=> {
         client.close();
     })
-    
-  });
+});

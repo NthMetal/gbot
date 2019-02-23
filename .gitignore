@@ -87,3 +87,8 @@ src/_logs/*
 
 #ignore pixiv asset
 src/assets/pixivimage.jpg
+
+#ignore nyc coverage
+.nyc_output
+coverage
+*.lcov

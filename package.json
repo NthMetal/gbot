@@ -4,7 +4,7 @@
   "description": "A discord bot named GBot.",
   "main": "bot.js",
   "scripts": {
-    "test": "mocha || false",
+    "test": "nyc mocha || false",
     "dev": "env NODE_ENV=development nodemon ./src/bot.js",
     "prod": "env NODE_ENV=production nodemon ./src/bot.js"
   },
@@ -39,6 +39,7 @@
     "mock-require": "^3.0.3",
     "nock": "^10.0.6",
     "nodemon": "^1.18.9",
+    "nyc": "^13.3.0",
     "sinon": "^7.2.4"
   }
 }
