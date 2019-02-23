@@ -46,6 +46,21 @@ function imgMessage(imgURL, channelID, message, nsfw=false) {
     logger.debug(`image url sent: ${imgURL}`);
 }
 
+function embedMessage(embed, channelID, message, nsfw=false){
+    if(!initialized) return;
+    if(nsfw && !gbot.channels[channelID].nsfw) {
+        errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
+        return;
+    }
+    logger.info(`sending embed to ${channelID}`);
+    gbot.sendMessage({
+        to: channelID,
+        message: message,
+        embed: embed
+    });
+    logger.debug(`successfully created an embed to ${channelID}`);
+}
+
 function imgUpload(imgURL, channelID, message, nsfw=false) {
     if(!initialized) return;
     console.log(channelID);
@@ -160,6 +175,7 @@ module.exports.messenger = {
     initialize: initialize,
     textMessage: textMessage,
     imgMessage: imgMessage,
+    embedMessage: embedMessage,
     imgUpload: imgUpload,
     errorMessage: errorMessage,
     errorOptions: errorOptions

@@ -19,4 +19,7 @@ Todo:
 
 * Add support for kdnf api
 
-* Add Sankaku search eventually:tm:
+* Make pixiv uploads embed with illust link
+
+
+

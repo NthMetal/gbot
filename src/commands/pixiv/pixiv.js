@@ -14,15 +14,13 @@ module.exports = async (args, argument, data, messenger, db) => {
         booru: false,
         google: false,
         explicit: command === 'pixivR',
-        pixivMaxPages: 10
+        pixivMaxPages: 5
     }
     var imageList = await images(argument, options, db);
     if(imageList.pixiv.length>0 && imageList.pixiv[0].imageUrl){
-        console.log('imlist: ', imageList.pixiv.length);
         var randindex = Math.floor(Math.random()*imageList.pixiv.length);
-        console.log('randindex: ', randindex);
         const rand = imageList.pixiv[randindex];
-        const message = `${rand.title} by: ${rand.name}\n<https://www.pixiv.net/member_illust.php?mode=medium&illust_id=${rand.id}>`;
+        const message = `${rand.title} by: ${rand.name} ${randindex}/${imageList.pixiv.length}\n<https://www.pixiv.net/member_illust.php?mode=medium&illust_id=${rand.id}>`;
         await pixivImg(rand.imageUrl, 'src/assets/pixivimage.jpg');
         messenger.imgUpload('src/assets/pixivimage.jpg', data.channel_id, message, options.explicit);
     }else {

@@ -35,4 +35,13 @@ if (env.logging.console_logging) {
     }));
 }
 
+logger.info = (message, callback) => {
+  return logger.log('info', `${new Date()}----------- ${message}`, callback);
+}
+
+logger.debug = (message, callback) => {
+  return logger.info('debug', `${new Date()}----------- ${message}`, callback);
+}
+
+
 module.exports.logger = logger;

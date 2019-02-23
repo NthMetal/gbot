@@ -81,19 +81,19 @@ async function getPixivImages(query, options) {
     var body = '&search_target=partial_match_for_tags&sort=popular_desc&filter=for_ios';
     var tail = `&offset=`;
     var explicitFilter = options.explicit ? 1 : 0;
+    var search = `${query} ${options.explicit?'R-18':'-R-18'}`
     var allItems = [];
     for(var i=0;i<options.pixivMaxPages;i++) {
         try {
-            var items = await pixiv.requestUrl(head+encodeURIComponent(query)+body+tail+(i*30));
+            var items = await pixiv.requestUrl(head+encodeURIComponent(search)+body+tail+(i*30));
         }catch(error){
-            console.log(error);
-            if(error.message.indexOf('Error occurred at the OAuth process.') !== -1) {
+            // console.log(error.error.message);
+            if(JSON.stringify(error).indexOf('Error occurred at the OAuth process.') !== -1) {
                 pixiv.refreshAccessToken();
                 i--; continue;
             }
         }
         if(items.illusts.length > 0){
-            console.log(items.illusts[0]);
             allItems.push(...items.illusts
                 .filter(item => item.x_restrict == explicitFilter)
                 .map(item => ({

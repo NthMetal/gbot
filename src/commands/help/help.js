@@ -7,7 +7,9 @@ const helpTextFragments = [
     '`nsfw`: Just like image but way more lewd. Only in NSFW channels.',
     '`pixiv`: Posts a random image from pixiv! (includes sort by popularity).',
     '`pixivR`: Posts a random nsfw image from pixiv! Only in NSFW channels',
-
+    '',
+    '`epic`: Draws a random 85-90 epic for you!',
+    '',
     '`I\'m also open source! check it out here`: <https://github.com/NthMetal/gbot>'
 ]
 
