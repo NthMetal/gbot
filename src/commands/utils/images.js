@@ -1,16 +1,14 @@
-const { google_search_engine, keys, pixiv_username, pixiv_password } = require('./../../_config/auth.json');
-const qs = require('qs');
+const { google_search_engine, keys, pixiv_username, pixiv_password, danbooru_auth } = require('../../_config/auth.json');
+
 const rp = require('request-promise');
 
 const GoogleImages = require('google-images');
-const Imgur = require('imgur-search');
 const PixivAppApi = require('pixiv-api-client')
 const pixivImg = require('pixiv-img');
 const pixiv = new PixivAppApi();
 
 pixiv.login(pixiv_username, pixiv_password);
 
-const { danbooru_auth } = require('../../_config/auth.json');
 const Danbooru = require('danbooru');
 const booru = new Danbooru(danbooru_auth);
 

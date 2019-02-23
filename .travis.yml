@@ -6,9 +6,9 @@ cache:
     - "node_modules"
 before_install:
   - npm install -g mocha
-  - npm install -g istanbul
+  - npm install -g nyc
 script:
   - nyc mocha
-  - nyc report --reporter=text-lcov > coverage.lcov && codecov
+  - nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov
 # after_success:
 # - bash <(curl -s https://codecov.io/bash)
