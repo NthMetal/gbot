@@ -5,9 +5,9 @@ var help =      require('./help/help.js');
 var roll =      require('./roll/roll.js');
 var image =     require('./image/image.js');
 
-var nsfw =     require('./nsfw/nsfw.js');
-var pixiv =    require('./pixiv/pixiv.js');
-var epic =    require('./epic/epic.js');
+var nsfw =      require('./nsfw/nsfw.js');
+var pixiv =     require('./pixiv/pixiv.js');
+var epic =      require('./epic/epic.js');
 
 const messageCommands = {
     "8ball": eightball,
