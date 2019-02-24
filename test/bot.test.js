@@ -29,8 +29,6 @@ describe('Testing GBotBot Initialization', function() {
         assert.isTrue(env.logging.console_logging, 'console logging enabled');
         assert.isTrue(env.logging.message_logging, 'message logging enabled');
         assert.equal(env.default_prefix, '&');
-        assert.equal(env.mongoURL, 'mongodb://localhost:27017');
-        
     })
 
     it('should successfully initialize production variables', function() {
@@ -42,7 +40,6 @@ describe('Testing GBotBot Initialization', function() {
         assert.isFalse(env.logging.console_logging, 'console logging enabled');
         assert.isFalse(env.logging.message_logging, 'message logging enabled');
         assert.equal(env.default_prefix, '&');
-        assert.equal(env.mongoURL, '');
     })
     it('should successfully initialize production variables by default', function() {
         var env = Environment.env('');
@@ -53,7 +50,6 @@ describe('Testing GBotBot Initialization', function() {
         assert.isFalse(env.logging.console_logging, 'console logging enabled');
         assert.isFalse(env.logging.message_logging, 'message logging enabled');
         assert.equal(env.default_prefix, '&');
-        assert.equal(env.mongoURL, '');
     })
 
     it('should successfully initialize the EventHandler', function() {
@@ -65,7 +61,6 @@ describe('Testing GBotBot Initialization', function() {
         assert.isFalse(env.logging.console_logging, 'console logging enabled');
         assert.isFalse(env.logging.message_logging, 'message logging enabled');
         assert.equal(env.default_prefix, '&');
-        assert.equal(env.mongoURL, '');
     })
   
   });
@@ -83,6 +78,15 @@ describe('Testing GBotBot Initialization', function() {
     var logger_fake = {
         info: sinon.fake(),
         debug: sinon.fake()
+    }
+    var messenger_fake = {
+        textMessage: sinon.fake(),
+        imgMessage: sinon.fake(),
+        embedMessage: sinon.fake(),
+        imgUpload: sinon.fake(),
+        errorMessage: sinon.fake(),
+        errorOptions: sinon.fake(),
+        errorReactionTimeout: sinon.fake()
     }
 
     it('should create a Discord object', function() {
@@ -102,14 +106,43 @@ describe('Testing GBotBot Initialization', function() {
                 content: '&help'
             }
         }
+        var event_undefined = {
+            t: 'MESSAGE_CREATE',
+            d: {
+                content: '&blahhh'
+            }
+        }
         var eventHandler = new EventHandler(gbot_fake, logger_fake);
         assert.isObject(eventHandler, 'event handler is created');
         assert.isFunction(eventHandler.handleEvent, 'handleEvent is a valid function');
         
         eventHandler.handleEvent(event_8ball, '&', gbot_fake, null);
         eventHandler.handleEvent(event_reaction, '&', gbot_fake, null);
+        eventHandler.handleEvent(event_undefined, '&', gbot_fake, null);
         assert(gbot_fake.sendMessage.called);
         assert(eventHandler, 'event handler is ok after running');
-    })
+    });
+
+    it('should handle 8ball command', function() {
+        var predictions_fake = sinon.fake.returns(['testprediction']);
+        var db_fake = {
+            collection: (collection_name) => {
+                return {
+                    findOne: (query) => {
+                        return {
+                            predictions: [1,2] //predictions_fake()
+                        }
+                    }
+                }
+            }
+        }
+        var data = {
+            channel_id: '123'
+        }
+        let eball = require('../src/commands/eightball/eightball.js');
+        eball(null, null, data, messenger_fake, db_fake)
+        assert(predictions_fake.called);
+        assert(messenger_fake.textMessage.called);
+    });
 
   });

@@ -20,7 +20,7 @@ gbot.on('ready', function (evt) {
     logger.info(gbot.username + ' - (' + gbot.id + ')');
     logger.info('GBot is running in '+ env.ENV + 'environment');
     logger.debug('---------This should not be visible in production');
-    gbot.setPresence({ status: 'online', game: { name: 'with Beef' } });
+    gbot.setPresence({ status: 'online', game: { name: 'with Flora' } });
 });
 
 console.log("connecting to gbot's brain");
