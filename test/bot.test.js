@@ -7,6 +7,7 @@ var auth = require(`../src/_config/auth.js`);
 var Environment = require(`../src/_config/env.js`);
 var EventHandler = require('../src/commands/eventHandler.js');
 var Discord = require('discord.io');
+var Messenger = require('../src/commands/utils/messenger.js');
 var messageHandler = require('../src/commands/message.js');
 //var MongoClient = require('mongodb');
 
@@ -114,31 +115,24 @@ describe('Testing GBotBot Initialization', function() {
         assert(eventHandler, 'event handler is ok after running');
     });
 
-    it('should handle 8ball command', function() {
-        // var predictions_fake = ;
+    it('should handle 8ball command', async function() {
         var db_fake = {
             collection: (collection_name) => {
                 return {
-                    findOne: (query) => {
-                        return {
-                            predictions: ['testprediction0']
-                        }
-                    }
+                    findOne: () => { return {predictions: ['fakeprediction']} }
                 }
             }
         }
         var data = {
             channel_id: '123'
         }
-        var messenger_fake = {
-            textMessage: (message, chid) => {
-                //assert.equal(message,':8ball: testprediction');
-            }
-        }
+        var messenger_fake = sinon.createStubInstance(Messenger);
+        
         let eball = require('../src/commands/eightball/eightball.js');
-        eball(null, null, data, messenger_fake, db_fake);
-        // assert(db_fake.collection('basic').findOne({ name: 'eight ball' }).predictions.returned);
-        //assert(messenger_fake.textMessage.called);
+        await eball(null, null, data, messenger_fake, db_fake);
+        assert(messenger_fake.textMessage.called);
+        assert.equal(messenger_fake.textMessage.args[0][0], ':8ball: fakeprediction');
+        assert.equal(messenger_fake.textMessage.args[0][1], '123');
     });
 
   });
