@@ -7,6 +7,5 @@
         "console_logging": false,
         "message_logging": false
     },
-    "default_prefix": "&",
-    "mongoURL": ""
+    "default_prefix": "&"
 }
