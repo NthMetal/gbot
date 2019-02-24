@@ -25,7 +25,7 @@ gbot.on('ready', function (evt) {
 
 console.log("connecting to gbot's brain");
 
-MongoClient.connect(env.mongoURL, function(err, client) {
+MongoClient.connect(auth.mongoAWS || "mongodb://localhost:27017", function(err, client) {
     if(err) throw err;
     console.log("gbot's brain is now connected");
    
