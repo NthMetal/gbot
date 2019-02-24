@@ -9,8 +9,9 @@ var nsfw =      require('./nsfw/nsfw.js');
 var pixiv =     require('./pixiv/pixiv.js');
 var epic =      require('./epic/epic.js');
 
-var youtube =   require('./youtube/youtube.js')
-var choose =    require('./choose/choose.js')
+var youtube =   require('./youtube/youtube.js');
+var choose =    require('./choose/choose.js');
+var jisho =     require('./jisho/jisho.js');
 
 const messageCommands = {
     "8ball": eightball,
@@ -22,7 +23,8 @@ const messageCommands = {
     "pixivR": pixiv,
     "epic": epic,
     "youtube": youtube,
-    "choose": choose
+    "choose": choose,
+    "jisho": jisho
 }
 
 module.exports = async (data, prefix, messenger, db) => {
