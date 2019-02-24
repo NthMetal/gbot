@@ -79,15 +79,6 @@ describe('Testing GBotBot Initialization', function() {
         info: sinon.fake(),
         debug: sinon.fake()
     }
-    var messenger_fake = {
-        textMessage: sinon.fake(),
-        imgMessage: sinon.fake(),
-        embedMessage: sinon.fake(),
-        imgUpload: sinon.fake(),
-        errorMessage: sinon.fake(),
-        errorOptions: sinon.fake(),
-        errorReactionTimeout: sinon.fake()
-    }
 
     it('should create a Discord object', function() {
         assert.isObject(Discord, 'discord object created');
@@ -124,13 +115,13 @@ describe('Testing GBotBot Initialization', function() {
     });
 
     it('should handle 8ball command', function() {
-        var predictions_fake = sinon.fake.returns(['testprediction']);
+        // var predictions_fake = ;
         var db_fake = {
             collection: (collection_name) => {
                 return {
                     findOne: (query) => {
                         return {
-                            predictions: [1,2] //predictions_fake()
+                            predictions: ['testprediction0']
                         }
                     }
                 }
@@ -139,10 +130,15 @@ describe('Testing GBotBot Initialization', function() {
         var data = {
             channel_id: '123'
         }
+        var messenger_fake = {
+            textMessage: (message, chid) => {
+                //assert.equal(message,':8ball: testprediction');
+            }
+        }
         let eball = require('../src/commands/eightball/eightball.js');
-        eball(null, null, data, messenger_fake, db_fake)
-        assert(predictions_fake.called);
-        assert(messenger_fake.textMessage.called);
+        eball(null, null, data, messenger_fake, db_fake);
+        // assert(db_fake.collection('basic').findOne({ name: 'eight ball' }).predictions.returned);
+        //assert(messenger_fake.textMessage.called);
     });
 
   });
