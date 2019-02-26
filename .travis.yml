@@ -6,7 +6,6 @@ cache:
     - "node_modules"
 before_install:
   - npm install -g mocha
-  - npm install -g nyc
 script:
-  - nyc mocha
-  - nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/coveralls
+  - ./node_modules/.bin/nyc mocha
+  - ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
