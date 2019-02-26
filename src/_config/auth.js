@@ -11,7 +11,8 @@ try {
         token: process.env.token,
         pixiv_username: process.env.pixiv_username,
         pixiv_password: process.env.pixiv_password,
-        danbooru_auth: process.env.danbooru_auth
+        danbooru_auth: process.env.danbooru_auth,
+        youtubeKey: process.env.youtubeKey
     }
 }
 

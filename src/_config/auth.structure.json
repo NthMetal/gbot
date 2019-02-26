@@ -3,5 +3,6 @@
     "danbooru_auth": "<Danbooru Auth>",
     "pixiv_username": "<Username for your pixiv account>",
     "pixiv_password": "<Password for your pixiv account>",
-    "mongoAWS": "<The mongo URL>"
+    "mongoAWS": "<The mongo URL>",
+    "youtubeKey": "<The Youtube Key>"
 }

@@ -1,8 +1,9 @@
+var { youtubeKey } = require('../../_config/auth.js');
 var search = require('youtube-search')
 
 var opts = {
     maxResults: 5,
-    key: 'AIzaSyBVs6ga7IuDBcbTyhkYM1dK7Y3kgaLWlPA'
+    key: youtubeKey
 };
 
 module.exports = async (args, argument, data, messenger, db) => {

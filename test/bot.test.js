@@ -115,6 +115,123 @@ describe('Testing GBotBot Initialization', function() {
         assert(eventHandler, 'event handler is ok after running');
     });
 
+});
+
+describe('messenger functionality', function() {
+
+    it('should initialize messenger', function() {
+        var gbot_fake = sinon.createStubInstance(Discord.Client);
+        var logger_fake = {
+            info: sinon.fake(),
+            debug: sinon.fake()
+        }
+        var eventHandler_fake = sinon.createStubInstance(EventHandler);
+        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+        assert.isObject(messenger, 'messenger is created');
+    });
+
+    it('should send a text message', function() {
+        var gbot_fake = sinon.createStubInstance(Discord.Client);
+        var logger_fake = {
+            info: sinon.fake(),
+            debug: sinon.fake()
+        }
+        var eventHandler_fake = sinon.createStubInstance(EventHandler);
+        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+        messenger.textMessage('test message', '1234');
+        assert(gbot_fake.sendMessage.called)
+        assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
+        assert.equal(gbot_fake.sendMessage.args[0][0].message, 'test message');
+    });
+
+    it('should send an image message', function() {
+        var gbot_fake = sinon.createStubInstance(Discord.Client);
+        var logger_fake = {
+            info: sinon.fake(),
+            debug: sinon.fake()
+        }
+        var eventHandler_fake = sinon.createStubInstance(EventHandler);
+        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+        messenger.imgMessage('test url', '1234', 'test message', false);
+        assert(gbot_fake.sendMessage.called);
+        assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
+        assert.equal(gbot_fake.sendMessage.args[0][0].message, '');
+        assert.equal(gbot_fake.sendMessage.args[0][0].embed.title, 'test message');
+        assert.equal(gbot_fake.sendMessage.args[0][0].embed.image.url, 'test url');
+        gbot_fake.channels = { '1234': {nsfw: false}};
+        messenger.imgMessage('test url', '1234', 'test message', true);
+        assert.equal(gbot_fake.sendMessage.callCount, 2);
+    });
+
+    it('should send an embed message', function() {
+        var gbot_fake = sinon.createStubInstance(Discord.Client);
+        var logger_fake = {
+            info: sinon.fake(),
+            debug: sinon.fake()
+        }
+        var eventHandler_fake = sinon.createStubInstance(EventHandler);
+        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+        messenger.embedMessage('test embed', '1234', 'test message', false);
+        assert(gbot_fake.sendMessage.called);
+        assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
+        assert.equal(gbot_fake.sendMessage.args[0][0].message, 'test message');
+        assert.equal(gbot_fake.sendMessage.args[0][0].embed, 'test embed');
+        gbot_fake.channels = { '1234': {nsfw: false}};
+        messenger.imgMessage('test url', '1234', 'test message', true);
+        assert.equal(gbot_fake.sendMessage.callCount, 2);
+    });
+
+    it('should upload an image', function() {
+        var gbot_fake = sinon.createStubInstance(Discord.Client);
+        var logger_fake = {
+            info: sinon.fake(),
+            debug: sinon.fake()
+        }
+        var eventHandler_fake = sinon.createStubInstance(EventHandler);
+        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+        messenger.imgUpload('test url', '1234', 'test message', false);
+        assert(gbot_fake.uploadFile.called);
+        assert.equal(gbot_fake.uploadFile.args[0][0].to, '1234');
+        assert.equal(gbot_fake.uploadFile.args[0][0].file, 'test url');
+        assert.equal(gbot_fake.uploadFile.args[0][0].message, 'test message');
+        gbot_fake.channels = { '1234': {nsfw: false}};
+        messenger.imgUpload('test url', '1234', 'test message', true);
+        assert.equal(gbot_fake.uploadFile.callCount, 1);
+    });
+
+    it('should send an error message', async function() {
+        var gbot_fake = sinon.createStubInstance(Discord.Client);
+        var logger_fake = {
+            info: sinon.fake(),
+            debug: sinon.fake()
+        }
+        var eventHandler_fake = sinon.createStubInstance(EventHandler);
+        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+        messenger.errorMessage('test message', '1234');
+        assert(gbot_fake.sendMessage.called);
+        assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
+        assert.equal(gbot_fake.sendMessage.args[0][0].message.indexOf('test message'), 0);
+        setTimeout(() => {
+            assert(gbot_fake.deleteMessage.called);
+            assert.equal(gbot_fake.deleteMessage.args[0][0].channelID, '1234');
+        }, 3000);
+    });
+
+    // it('should send error options', async function() {
+    //     var gbot_fake = sinon.createStubInstance(Discord.Client);
+    //     var logger_fake = {
+    //         info: sinon.fake(),
+    //         debug: sinon.fake()
+    //     }
+    //     var eventHandler_fake = sinon.createStubInstance(EventHandler);
+    //     var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+    //     messenger.errorOptions('test command', 'test arg', options, 'test message', data);
+        
+    // });
+
+})
+
+describe('basic command functionality', function() {
     it('should handle 8ball command', async function() {
         var db_fake = {
             collection: (collection_name) => {
@@ -135,4 +252,16 @@ describe('Testing GBotBot Initialization', function() {
         assert.equal(messenger_fake.textMessage.args[0][1], '123');
     });
 
-  });
+    it('should handle choose command', function() {
+        var messenger_fake = sinon.createStubInstance(Messenger);
+        var data = {
+            channel_id: '123'
+        }
+        let choose = require('../src/commands/choose/choose.js');
+        let args = ['testitem'];
+        choose(args, null, data, messenger_fake, null);
+        assert(messenger_fake.textMessage.called);
+        assert.equal(messenger_fake.textMessage.args[0][0], 'My wisdom, unto you: testitem');
+        assert.equal(messenger_fake.textMessage.args[0][1], '123');
+    });
+})

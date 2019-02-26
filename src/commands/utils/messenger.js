@@ -24,7 +24,7 @@ module.exports = class Messenger {
     
     imgMessage(imgURL, channelID, message, nsfw=false) {
         if(nsfw && !gbot.channels[channelID].nsfw) {
-            errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
+            this.errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
             return;
         }
         logger.info(`sending image to ${channelID}`);
@@ -45,7 +45,7 @@ module.exports = class Messenger {
     
     embedMessage(embed, channelID, message, nsfw=false){
         if(nsfw && !gbot.channels[channelID].nsfw) {
-            errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
+            this.errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
             return;
         }
         logger.info(`sending embed to ${channelID}`);
@@ -58,9 +58,8 @@ module.exports = class Messenger {
     }
     
     imgUpload(imgURL, channelID, message, nsfw=false) {
-        console.log(channelID);
         if(nsfw && !gbot.channels[channelID].nsfw){
-            errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
+            this.errorMessage(`GBot can't post an nsfw image in this channel D:`, channelID);
             return;
         }
         logger.info(`sending image to ${channelID}`);
@@ -154,13 +153,3 @@ module.exports = class Messenger {
         }, 450*index);
     }
 }
-
-// module.exports.messenger = {
-//     initialize: initialize,
-//     textMessage: textMessage,
-//     imgMessage: imgMessage,
-//     embedMessage: embedMessage,
-//     imgUpload: imgUpload,
-//     errorMessage: errorMessage,
-//     errorOptions: errorOptions
-// }
