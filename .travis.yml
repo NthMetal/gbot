@@ -9,4 +9,4 @@ before_install:
   - npm install -g nyc
 script:
   - nyc mocha
-  - nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov
+  - nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/coveralls

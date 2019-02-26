@@ -1,5 +1,5 @@
 # GBot! 
-### [![Build Status](https://travis-ci.org/NthMetal/gbot.svg?branch=master)](https://travis-ci.org/NthMetal/gbot) [![codecov](https://codecov.io/gh/NthMetal/gbot/branch/master/graph/badge.svg)](https://codecov.io/gh/NthMetal/gbot)
+### [![Build Status](https://travis-ci.org/NthMetal/gbot.svg?branch=master)](https://travis-ci.org/NthMetal/gbot) [![Coverage Status](https://coveralls.io/repos/github/NthMetal/gbot/badge.svg?branch=master)](https://coveralls.io/github/NthMetal/gbot?branch=master)
 
 Todo:
 
