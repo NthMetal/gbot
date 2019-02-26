@@ -118,26 +118,26 @@ describe('Testing GBotBot Initialization', function() {
 });
 
 describe('messenger functionality', function() {
+    var gbot_fake;
+    var logger_fake;
+    var eventHandler_fake;
+    var messenger;
 
-    it('should initialize messenger', function() {
-        var gbot_fake = sinon.createStubInstance(Discord.Client);
-        var logger_fake = {
+    beforeEach(() => {
+        gbot_fake = sinon.createStubInstance(Discord.Client);
+        logger_fake = {
             info: sinon.fake(),
             debug: sinon.fake()
         }
-        var eventHandler_fake = sinon.createStubInstance(EventHandler);
-        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+        eventHandler_fake = sinon.createStubInstance(EventHandler);
+        messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake); 
+    });
+
+    it('should initialize messenger', function() {
         assert.isObject(messenger, 'messenger is created');
     });
 
-    it('should send a text message', function() {
-        var gbot_fake = sinon.createStubInstance(Discord.Client);
-        var logger_fake = {
-            info: sinon.fake(),
-            debug: sinon.fake()
-        }
-        var eventHandler_fake = sinon.createStubInstance(EventHandler);
-        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+    it('should send a text message', function() {  
         messenger.textMessage('test message', '1234');
         assert(gbot_fake.sendMessage.called)
         assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
@@ -145,13 +145,6 @@ describe('messenger functionality', function() {
     });
 
     it('should send an image message', function() {
-        var gbot_fake = sinon.createStubInstance(Discord.Client);
-        var logger_fake = {
-            info: sinon.fake(),
-            debug: sinon.fake()
-        }
-        var eventHandler_fake = sinon.createStubInstance(EventHandler);
-        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
         messenger.imgMessage('test url', '1234', 'test message', false);
         assert(gbot_fake.sendMessage.called);
         assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
@@ -163,14 +156,7 @@ describe('messenger functionality', function() {
         assert.equal(gbot_fake.sendMessage.callCount, 2);
     });
 
-    it('should send an embed message', function() {
-        var gbot_fake = sinon.createStubInstance(Discord.Client);
-        var logger_fake = {
-            info: sinon.fake(),
-            debug: sinon.fake()
-        }
-        var eventHandler_fake = sinon.createStubInstance(EventHandler);
-        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
+    it('should send an embed message', function() {    
         messenger.embedMessage('test embed', '1234', 'test message', false);
         assert(gbot_fake.sendMessage.called);
         assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
@@ -182,13 +168,6 @@ describe('messenger functionality', function() {
     });
 
     it('should upload an image', function() {
-        var gbot_fake = sinon.createStubInstance(Discord.Client);
-        var logger_fake = {
-            info: sinon.fake(),
-            debug: sinon.fake()
-        }
-        var eventHandler_fake = sinon.createStubInstance(EventHandler);
-        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
         messenger.imgUpload('test url', '1234', 'test message', false);
         assert(gbot_fake.uploadFile.called);
         assert.equal(gbot_fake.uploadFile.args[0][0].to, '1234');
@@ -200,13 +179,6 @@ describe('messenger functionality', function() {
     });
 
     it('should send an error message', async function() {
-        var gbot_fake = sinon.createStubInstance(Discord.Client);
-        var logger_fake = {
-            info: sinon.fake(),
-            debug: sinon.fake()
-        }
-        var eventHandler_fake = sinon.createStubInstance(EventHandler);
-        var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
         messenger.errorMessage('test message', '1234');
         assert(gbot_fake.sendMessage.called);
         assert.equal(gbot_fake.sendMessage.args[0][0].to, '1234');
@@ -217,17 +189,44 @@ describe('messenger functionality', function() {
         }, 3000);
     });
 
-    // it('should send error options', async function() {
-    //     var gbot_fake = sinon.createStubInstance(Discord.Client);
-    //     var logger_fake = {
-    //         info: sinon.fake(),
-    //         debug: sinon.fake()
-    //     }
-    //     var eventHandler_fake = sinon.createStubInstance(EventHandler);
-    //     var messenger = new Messenger(gbot_fake, logger_fake, eventHandler_fake);    
-    //     messenger.errorOptions('test command', 'test arg', options, 'test message', data);
-        
-    // });
+    it('should send error options', async function() {
+        var options = [
+            { 
+                reaction: 'x', 
+                msg: `1. Cancel`,
+                data: 'x'
+            }
+        ]
+        var data = {
+            author: { id: 'dataauthorid' },
+            channel_id: '123'
+        }
+        messenger.errorOptions('test command', 'test arg', options, 'test message', data);
+        assert(gbot_fake.sendMessage.called);
+        assert.equal(gbot_fake.sendMessage.args[0][0].to, '123');
+        assert.equal(gbot_fake.sendMessage.args[0][0].message, '```test message\n1. Cancel```');
+        // gbot_fake.sendMessage.args[0][1](null, {id: '123'});
+        // // assert.equal(gbot_fake.sendMessage.args[0][1], '```test message\n1. Cancel```');
+        // console.log(gbot_fake.sendMessage.args[0][1].args);
+        // assert(messenger.errorReactionTimeout.called);
+    });
+
+    it('should add a reaction', async function() {
+        var options = [
+            { 
+                reaction: 'x', 
+                msg: `1. Cancel`,
+                data: 'x'
+            }
+        ]
+        messenger.errorReactionTimeout('123', '456', options, 0);
+        setTimeout(() => {
+            assert(gbot_fake.addReaction.called);
+            assert.equal(gbot_fake.addReaction.args[0][0].channelID, '123');
+            assert.equal(gbot_fake.addReaction.args[0][0].messageID, '456');
+            assert.equal(gbot_fake.addReaction.args[0][0].reaction, '❌');
+        });
+    });
 
 })
 
