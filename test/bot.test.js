@@ -64,9 +64,9 @@ describe('Testing GBotBot Initialization', function() {
         assert.equal(env.default_prefix, '&');
     })
   
-  });
+});
 
-  describe('Testing GBotBot Creation', function() {
+describe('Testing GBotBot Creation', function() {
 
     var gbot_fake = {
         on: sinon.fake(),
@@ -228,7 +228,7 @@ describe('messenger functionality', function() {
         });
     });
 
-})
+});
 
 describe('basic command functionality', function() {
     it('should handle 8ball command', async function() {
@@ -263,4 +263,89 @@ describe('basic command functionality', function() {
         assert.equal(messenger_fake.textMessage.args[0][0], 'My wisdom, unto you: testitem');
         assert.equal(messenger_fake.textMessage.args[0][1], '123');
     });
-})
+
+    it('should handle epic command', async function () {
+        var messenger_fake = sinon.createStubInstance(Messenger);
+        var data = {
+            channel_id: '123',
+            author: {
+                id: '321'
+            }
+        }
+        var db = {
+            collection: (str) => {
+                return {
+                    aggregate: (params) => {
+                        return {
+                            toArray: () => {
+                                return [{items: {imageName: 'imgName', name: 'testname'}}]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        var db_empty = {
+            collection: (str) => {
+                return {
+                    aggregate: (params) => {
+                        return {
+                            toArray: () => {
+                                return null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        let choose = require('../src/commands/epic/epic.js');
+        let args = ['testitem'];
+        await choose(args, null, data, messenger_fake, db);
+        assert(messenger_fake.embedMessage.called);
+        assert.equal(messenger_fake.embedMessage.args[0][0].title, 'You got a testname!');
+        assert.equal(messenger_fake.embedMessage.args[0][0].thumbnail.url, 'http://wiki.dfo-world.com/images/imgName.png');
+        assert.equal(messenger_fake.embedMessage.args[0][1], '123');
+        await choose(args, null, data, messenger_fake, db_empty);
+    });
+
+    it('should handle roll command', function () {
+
+    });
+});
+
+describe('image commands', function() {
+    it('should handle danbooru image command', async function() {
+        var messenger_fake = sinon.createStubInstance(Messenger);
+        let image = require('../src/commands/image/image.js');
+        var data = {
+            channel_id: '123'
+        }
+        await image(null, '', data, messenger_fake, null); 
+        assert(messenger_fake.errorMessage.called);
+        await image(null, 'watanabe_you', data, messenger_fake, null);
+        assert(messenger_fake.imgMessage.called);
+        await image(null, 'watanabe_y', data, messenger_fake, null);
+        assert(messenger_fake.errorOptions.called);
+        await image(null, 'hawkgir', data, messenger_fake, null);
+        assert(messenger_fake.errorOptions.calledTwice);
+        await image(null, 's0-a930-254jsa', data, messenger_fake, null);
+        assert(messenger_fake.errorOptions.calledTwice);
+    });
+    it('should handle danbooru nsfw image command', async function() {
+        var messenger_fake = sinon.createStubInstance(Messenger);
+        let nsfw = require('../src/commands/nsfw/nsfw.js');
+        var data = {
+            channel_id: '123'
+        }
+        await nsfw(null, '', data, messenger_fake, null); 
+        assert(messenger_fake.errorMessage.called);
+        await nsfw(null, 'watanabe_you', data, messenger_fake, null);
+        assert(messenger_fake.imgMessage.called);
+        await nsfw(null, 'watanabe_y', data, messenger_fake, null);
+        assert(messenger_fake.errorOptions.called);
+        await nsfw(null, 'hawkgir', data, messenger_fake, null);
+        assert(messenger_fake.errorOptions.calledTwice);
+        await nsfw(null, 's0-a930-254jsa', data, messenger_fake, null);
+        assert(messenger_fake.errorOptions.calledTwice);
+    });
+});

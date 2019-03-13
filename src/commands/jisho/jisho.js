@@ -1,14 +1,11 @@
 const jishoApi = require('unofficial-jisho-api');
 const jisho = new jishoApi();
 
-
-module.exports = async (args, argument, data, messenger, db) => {
-
-    if (argument.match(/[a-zA-Z]/i)) {
-        jisho.searchForPhrase(argument).then(result => {
-            var embedP = {
-                "color": 13044974,
-                "fields": [
+embedCreator = {
+    english: (result) => {
+        return {
+            "color": 13044974,
+            "fields": [
                 {
                     "name": "Kanji",
                     "value": result.data[0].slug
@@ -25,25 +22,16 @@ module.exports = async (args, argument, data, messenger, db) => {
                     "name": "Parts of Speech:",
                     "value": result.data[0].senses[0].parts_of_speech.join(', ')
                 }
-                ]
-            }
-            console.log(result); 
-            console.log(result.data[0].senses[0]);
-            console.log(result.data[0].japanese[0]);
-            console.log(result.data[0].attribution);
-            messenger.embedMessage(embedP, data.channel_id, '');
-            console.log(embedP);
-        }).catch( err => {
-            messenger.errorMessage("Invalid input.", data.channel_id);
-        })
-    }else{
-       jisho.searchForKanji(argument).then(result => {
-            var embedK = {
-                "color": 13044974,
-                "thumbnail": {
-                    "url": result.strokeOrderGifUri
-                },
-                "fields": [
+            ]
+        }
+    },
+    japanese: (result) => {
+        return {
+            "color": 13044974,
+            "thumbnail": {
+                "url": result.strokeOrderGifUri
+            },
+            "fields": [
                 {
                     "name": "Meaning",
                     "value": result.meaning
@@ -60,13 +48,20 @@ module.exports = async (args, argument, data, messenger, db) => {
                     "name": "Jisho URL",
                     "value": result.uri
                 }
-                ]   
-            }
-            //console.log(result);
-            messenger.embedMessage(embedK, data.channel_id, '');
-            //console.log(embedK);
-        }).catch( err => {
-            messenger.errorMessage("Invalid input.", data.channel_id);
-        })
+            ]   
+        }
     }
+}
+
+module.exports = async (args, argument, data, messenger, db) => {
+    let { language, searchFunction } = argument.match(/[a-zA-Z]/i) ? 
+    {language: 'english', searchFunction: 'searchForPhrase'} : 
+    {language: 'japanese', searchFunction: 'searchForKanji'};
+    
+    jisho[searchFunction](argument).then(result => {
+        var embedP = embedCreator[language](result);
+        messenger.embedMessage(embedP, data.channel_id, '');
+    }).catch( err => {
+        messenger.errorMessage("Invalid input.", data.channel_id);
+    })
 }
