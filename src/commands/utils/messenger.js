@@ -150,6 +150,6 @@ module.exports = class Messenger {
             }, function(err, res) {
                 if (err) { throw err; }
             });
-        }, 450*index);
+        }, 650*index);
     }
 }

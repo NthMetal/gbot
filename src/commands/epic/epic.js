@@ -13,7 +13,8 @@ module.exports = async (args, argument, data, messenger, db) => {
             { $sample: { "size": 1 } } 
         ]
     ).toArray();
-
+    
+    
     // var encoder = new GIFEncoder(320, 240);
     // encoder.createReadStream().pipe(fs.createWriteStream('myanimated.gif'));
     if(!randomEpic) return; //TODO Error message
@@ -26,16 +27,10 @@ module.exports = async (args, argument, data, messenger, db) => {
             url: itemURL,
         }
     }
+    
     messenger.embedMessage(embed, data.channel_id);
 
-    var dbresult;
-    if(await db.collection('users').findOne({discordID: data.author.id}).count()){
-        await db.collection('users').update({discordID: data.author.id},)
-    }else{
-
-    }
-    
-    console.log(data);
-    // saveEpic
-    // messenger.textMessage('in Development');
+    // if(await db.collection('users').findOne({discordID: data.author.id}).count()){
+    //     await db.collection('users').update({discordID: data.author.id},)
+    // }
 }

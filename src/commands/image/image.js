@@ -15,7 +15,7 @@ module.exports = async (args, argument, data, messenger, db) => {
     var imageList = await images(argument, options, db);
     if(imageList.danbooru.length>0 && imageList.danbooru[0].imageUrl){
         const rand = imageList.danbooru[Math.floor(Math.random()*imageList.danbooru.length)];
-        messenger.imgMessage(rand.imageUrl,  data.channel_id, rand.source);
+        messenger.imgMessage(rand.imageUrl, data.channel_id, rand.source);
     }else
     if(imageList.danbooru.length>0){
         var reactions = ['one','two','three','four','five'];

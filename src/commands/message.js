@@ -40,7 +40,7 @@ module.exports = async (data, prefix, messenger, db) => {
     // TODO: this needs to be moved
     /* istanbul ignore next */
     if(data.channel_id === '537108393626697748' && data.author.id === '101794991625490432'){
-        console.log("lich comment in cutem")
+        console.log("lich comment in cutem", data.content.split(/[\<\>]/).filter(item => item[0]===':'));
         data.content.split(/[\<\>]/).filter(item => item[0]===':').forEach(async emoji => {
             console.log("adding emoji: ", emoji);
             let result = await db.collection('lichaesflashcards').updateOne(
