@@ -5,6 +5,9 @@
 [![devDependencies Status](https://david-dm.org/NthMetal/gbot/dev-status.svg)](https://david-dm.org/NthMetal/gbot?type=dev)
 [![Known Vulnerabilities](https://snyk.io/test/github/NthMetal/gbot/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NthMetal/gbot?targetFile=package.json)
 
+Deprecated. GBotBot is moving to typescript.
+Entire project will be redone.
+
 Todo:
 
 * Write more tests & maximize coverage
