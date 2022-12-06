@@ -28,7 +28,7 @@
     "mongodb": "^3.1.13",
     "pixiv-api-client": "^0.18.0",
     "pixiv-img": "^0.3.1",
-    "qs": "^6.6.0",
+    "qs": "^6.6.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "translate": "^1.0.4",
